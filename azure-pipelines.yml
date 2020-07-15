@@ -37,3 +37,8 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+- task: prisma-cloud-compute-scan@2
+  inputs:
+    scanType: 'images'
+    twistlockService: 'lsmith_se_sandbox'
+    artifact: 'turbodogfrontend'
