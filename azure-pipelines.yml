@@ -40,5 +40,5 @@ stages:
     - task: prisma-cloud-compute-scan@2
       inputs:
         scanType: 'images'
-        twistlockService: 'lsmith_se_sandbox'
+        twistlockService: 'PC_2004u2'
         artifact: 'turbodogfrontend:latest'
