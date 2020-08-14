@@ -37,8 +37,16 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-    - task: prisma-cloud-compute-scan@2
+#    - task: prisma-cloud-compute-scan@2
+#      inputs:
+#        scanType: 'images'
+#        twistlockService: 'PC_2004u2'
+#        artifact: 'turbodogfrontend:latest'
+    - task: Bash@3
+      displayName: Twistcli Scan
       inputs:
-        scanType: 'images'
-        twistlockService: 'PC_2004u2'
-        artifact: 'turbodogfrontend:latest'
+        targetType: inline
+        script: 
+          curl -k -O -u azuredevlops:'Azuredevops1' https://console-master-demo2004u2.lsmith.demo.twistlock.com/api/v1/util/twistcli;
+          chmod a+x twistcli;
+          ./twistcli images scan --address https://console-master-demo2004u2.lsmith.demo.twistlock.com -u azuredevops -p 'Azuredevops1'' --details $(containerRegistry)/$(artifact);
