@@ -49,4 +49,7 @@ stages:
         script: 
           curl -k -O -u azuredevops:Azuredevops1 https://console-master-demo2004u2.lsmith.demo.twistlock.com/api/v1/util/twistcli;
           chmod a+x twistcli;
-          ./twistcli images scan --address https://console-master-demo2004u2.lsmith.demo.twistlock.com -u azuredevops -p Azuredevops1 --details turbodog.azurecr.io/turbodogfrontend:latest;
+          echo $(tag)
+          echo $(containerRegistry)
+          echo $(imageRepository)
+          ./twistcli images scan --address https://console-master-demo2004u2.lsmith.demo.twistlock.com -u azuredevops -p Azuredevops1 --details turbodog.azurecr.io/turbodogfrontend:14;
