@@ -42,7 +42,7 @@ stages:
 #        scanType: 'images'
 #        twistlockService: 'PC_2004u2'
 #        artifact: 'turbodogfrontend:latest'
-    - task: Bash@2
+    - task: Bash@3
       displayName: Twistcli Scan
       inputs:
         targetType: inline
