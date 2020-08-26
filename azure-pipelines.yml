@@ -57,4 +57,4 @@ stages:
       inputs:
         scanType: 'images'
         twistlockService: 'PC_2004u2'
-        artifact: '$(imageRepository):$(Build.BuildId)'
+        artifact: 'turbodog.azurecr.io/$(imageRepository):$(Build.BuildId)'
