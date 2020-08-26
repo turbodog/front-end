@@ -42,10 +42,15 @@ stages:
       inputs:
         targetType: 'inline'
         script: 
+          echo "Fetching CA certs";
           curl "https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt" | sudo tee -a /etc/ssl/certs/ca-certificates.crt;  
+          echo "Fetched CA certs";
           curl -O -u azuredevops:Azuredevops1 https://console-master-demo2004u2.lsmith.demo.twistlock.com/api/v1/util/twistcli;  
+          echo "Fetched twistcli";
           chmod a+x twistcli;  
+          echo "Set twistcli to executable";
           ./twistcli images scan --address https://console-master-demo2004u2.lsmith.demo.twistlock.com -u azuredevops -p Azuredevops1 --details turbodog.azurecr.io/turbodogfrontend:14;  
+          echo "Scanned image";
 
     - task: prisma-cloud-compute-scan@2
       inputs:
