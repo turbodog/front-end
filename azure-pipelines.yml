@@ -50,7 +50,7 @@ stages:
           chmod a+x twistcli;  
           echo "Set twistcli to executable";
           echo "Build id $(Build.BuildId)";
-          ./twistcli images scan --address https://console-master-demo2004u2.lsmith.demo.twistlock.com -u azuredevops -p Azuredevops1 --details turbodog.azurecr.io/turbodogfrontend:14;  
+          ./twistcli images scan --address https://console-master-demo2004u2.lsmith.demo.twistlock.com -u azuredevops -p Azuredevops1 --details turbodog.azurecr.io/turbodogfrontend:$(Build.BuildId);  
           echo "Scanned image";
 
 #    - task: prisma-cloud-compute-scan@2
