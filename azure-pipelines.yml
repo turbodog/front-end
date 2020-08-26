@@ -37,12 +37,12 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-    - task: Bash@2
-      displayName: Twistcli cert
+    - task: Bash@3
+      displayName: Prisma Cloud Compute image security scan
       inputs:
-        targetType: inline
+        targetType: 'inline'
         script: 
-          curl https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt | sudo tee -a /etc/ssl/certs/ca-certificates.crt
+          curl "https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt" | sudo tee -a /etc/ssl/certs/ca-certificates.crt
           curl -O -u azuredevops:Azuredevops1 https://console-master-demo2004u2.lsmith.demo.twistlock.com/api/v1/util/twistcli;
           chmod a+x twistcli;
           ./twistcli images scan --address https://console-master-demo2004u2.lsmith.demo.twistlock.com -u azuredevops -p Azuredevops1 --details turbodog.azurecr.io/turbodogfrontend:14;
