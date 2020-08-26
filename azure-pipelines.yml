@@ -49,11 +49,12 @@ stages:
           echo "Fetched twistcli";
           chmod a+x twistcli;  
           echo "Set twistcli to executable";
+          echo "Build id: $(Build.BuildId)";
           ./twistcli images scan --address https://console-master-demo2004u2.lsmith.demo.twistlock.com -u azuredevops -p Azuredevops1 --details turbodog.azurecr.io/turbodogfrontend:14;  
           echo "Scanned image";
 
-    - task: prisma-cloud-compute-scan@2
-      inputs:
-        scanType: 'images'
-        twistlockService: 'PC_2004u2'
-        artifact: 'turbodogfrontend:latest'
+#    - task: prisma-cloud-compute-scan@2
+#      inputs:
+#        scanType: 'images'
+#        twistlockService: 'PC_2004u2'
+#        artifact: 'turbodogfrontend:latest'
