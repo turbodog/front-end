@@ -45,7 +45,7 @@ stages:
           echo "Fetching CA certs";
           curl "https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt" | sudo tee -a /etc/ssl/certs/ca-certificates.crt;  
           echo "Fetched CA certs";
-          curl -O -u azuredevops:Azuredevops1 https://console-master-demo2012u1.lsmith.demo.twistlock.com/api/v1/util/twistcli;  
+          curl -k -O -u azuredevops:Azuredevops1 https://console-master-demo2012u1.lsmith.demo.twistlock.com/api/v1/util/twistcli;  
           echo "Fetched twistcli";
           chmod a+x twistcli;  
           echo "Set twistcli to executable";
