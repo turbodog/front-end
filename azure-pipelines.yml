@@ -56,5 +56,5 @@ stages:
     - task: prisma-cloud-compute-scan@2
       inputs:
         scanType: 'images'
-        twistlockService: 'PC_2004u2'
+        twistlockService: 'PC_2012u1'
         artifact: 'turbodog.azurecr.io/$(imageRepository):$(Build.BuildId)'
