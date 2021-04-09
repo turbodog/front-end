@@ -1,0 +1,60 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '2a30b54f-8b22-43bd-809b-caa2a8df0160'
+  imageRepository: 'turbodogfrontend'
+  containerRegistry: 'turbodog.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+  
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+    - task: Bash@3
+      displayName: Prisma Cloud Compute image security scan
+      inputs:
+        targetType: 'inline'
+        script: 
+          echo "Fetching CA certs";
+          curl "https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt" | sudo tee -a /etc/ssl/certs/ca-certificates.crt;  
+          echo "Fetched CA certs";
+          curl -k -O -u azuredevops:Azuredevops1 https://console-master-demo2012u1.lsmith.demo.twistlock.com/api/v1/util/twistcli;  
+          echo "Fetched twistcli";
+          chmod a+x twistcli;  
+          echo "Set twistcli to executable";
+          echo "Built image $(imageRepository):$(Build.BuildId)";
+          ./twistcli images scan --address https://console-master-demo2012u1.lsmith.demo.twistlock.com -u azuredevops -p Azuredevops1 --details turbodog.azurecr.io/$(imageRepository):$(Build.BuildId);  
+          echo "Scanned image";
+
+    - task: prisma-cloud-compute-scan@2
+      inputs:
+        scanType: 'images'
+        twistlockService: 'PC_2012u1'
+        artifact: 'turbodog.azurecr.io/$(imageRepository):$(Build.BuildId)'
